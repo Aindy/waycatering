@@ -19,15 +19,7 @@ const Contacts = () => {
             <ul className={s.list}>
               <li>
                 <span>ИП</span>
-                <span>Магомадов Адам Увайсович</span>
-              </li>
-              <li>
-                <span>ИНН</span>
-                <span>201405745200</span>
-              </li>
-              <li>
-                <span>ОГРНИП</span>
-                <span>321200000030880</span>
+                <span>Хасуев Адам Русланович</span>
               </li>
               <li>
                 <span>Email</span>
@@ -53,19 +45,15 @@ const Contacts = () => {
               </li>
               <li>
                 <span>Контактное лицо</span>
-                <span>Хасуев Алу Русланович</span>
+                <span>Хасуев Адам Русланович</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className={s.card}>
-          <h3 className={s.cardTitle}>Адреса</h3>
+          <h3 className={s.cardTitle}>Адрес</h3>
           <ul className={s.list}>
-            <li>
-              <span>Юр. адрес:</span>
-              <span>г. Грозный, ул. Кошевого д. 60</span>
-            </li>
             <li>
               <span>Факт. адрес:</span>
               <span>г. Грозный, бульвар Эсамбаева д. 11</span>

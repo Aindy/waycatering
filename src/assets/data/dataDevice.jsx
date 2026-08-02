@@ -1,4 +1,14 @@
-import imgNone from "../../assets/img/imgNone.png";
+import device1 from "../../assets/img/catalogDevice/device1.jpg";
+import device2 from "../../assets/img/catalogDevice/device2.jpg";
+import device3 from "../../assets/img/catalogDevice/device3.jpg";
+import device4 from "../../assets/img/catalogDevice/device4.jpg";
+import device5 from "../../assets/img/catalogDevice/device5.jpg";
+import device6 from "../../assets/img/catalogDevice/device6.jpg";
+import device7 from "../../assets/img/catalogDevice/device7.jpg";
+import device8 from "../../assets/img/catalogDevice/device8.jpg";
+import device9 from "../../assets/img/catalogDevice/device9.jpg";
+import device11 from "../../assets/img/catalogDevice/device11.jpg";
+import device12 from "../../assets/img/catalogDevice/device12.jpg";
 
 const dataDevice = [
   {
@@ -6,12 +16,11 @@ const dataDevice = [
     items: [
       {
         id: 1,
-        title:
-          "Аренда прямоугольного стола со скатертью для накрытия фуршета (длина 1,8м ширина 0,9м)",
-        desc: "",
-        price: 1500,
+        title: "Аренда прямоугольных столов (2 500 руб. 1 шт.)",
+        desc: "Длина 1,8 м, ширина 0,9 м",
+        price: 2500,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device1,
       },
       {
         id: 2,
@@ -19,42 +28,39 @@ const dataDevice = [
         desc: "",
         price: 1500,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device2,
       },
       {
         id: 3,
-        title:
-          "Аренда круглого стола со скатертью для накрытия фуршета (диаметр 1,5м)",
+        title: "Аренда круглого стола со скатертью для накрытия фуршета (диаметр 1,5м)",
         desc: "",
         price: 1500,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device3,
       },
       {
         id: 4,
         title: "Аренда прямоугольной скатерти",
         desc: "",
-        price: 600,
+        price: 1000,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device4,
       },
       {
         id: 5,
-        title:
-          "Аренда круглого стола со стульями (комплект: 1 стол со скатертью, 8 стульев с чехлами)",
+        title: "Аренда круглого стола со стульями (комплект: 1 стол со скатертью, 8 стульев с чехлами)",
         desc: "",
         price: 4000,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device5,
       },
       {
         id: 6,
-        title:
-          "Аренда прямоугольного стола со стульями (комплект: 1 стол со скатертью, 8 стульев с чехлами)",
+        title: "Аренда прямоугольного стола со стульями (комплект: 1 стол со скатертью, 8 стульев с чехлами)",
         desc: "",
         price: 4000,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device6,
       },
       {
         id: 7,
@@ -62,7 +68,7 @@ const dataDevice = [
         desc: "",
         price: 400,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device7,
       },
       {
         id: 8,
@@ -70,7 +76,7 @@ const dataDevice = [
         desc: "",
         price: 5000,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device8,
       },
       {
         id: 9,
@@ -78,23 +84,15 @@ const dataDevice = [
         desc: "",
         price: 9000,
         unit: "₽ / 1 шт.",
-        img: imgNone,
-      },
-      {
-        id: 10,
-        title: "Аренда мармита",
-        desc: "",
-        price: 2500,
-        unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device9,
       },
       {
         id: 11,
-        title: "Аренда бойлера для охлаждения воды",
+        title: "Аренда бойлера для кипятка",
         desc: "",
-        price: 4000,
+        price: 2000,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device11,
       },
       {
         id: 12,
@@ -102,9 +100,10 @@ const dataDevice = [
         desc: "",
         price: 300,
         unit: "₽ / 1 шт.",
-        img: imgNone,
+        img: device12,
       },
     ],
   },
 ];
+
 export default dataDevice;
