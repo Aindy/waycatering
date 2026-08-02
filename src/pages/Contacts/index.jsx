@@ -18,10 +18,6 @@ const Contacts = () => {
             <h3 className={s.cardTitle}>Реквизиты</h3>
             <ul className={s.list}>
               <li>
-                <span>ИП</span>
-                <span>Хасуев Адам Русланович</span>
-              </li>
-              <li>
                 <span>Email</span>
                 <a href="mailto:shantilcakes@gmail.com">shantilcakes@gmail.com</a>
               </li>
