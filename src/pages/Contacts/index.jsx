@@ -15,16 +15,6 @@ const Contacts = () => {
 
         <div className={s.grid}>
           <div className={s.card}>
-            <h3 className={s.cardTitle}>Реквизиты</h3>
-            <ul className={s.list}>
-              <li>
-                <span>Email</span>
-                <a href="mailto:shantilcakes@gmail.com">shantilcakes@gmail.com</a>
-              </li>
-            </ul>
-          </div>
-
-          <div className={s.card}>
             <h3 className={s.cardTitle}>Быстрые контакты</h3>
             <p className={s.note}>
               Позвоните или напишите — мы обсудим задачу и предложим варианты
