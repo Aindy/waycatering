@@ -1,0 +1,12 @@
+<?php
+/**
+ * Пример конфигурационного файла для Telegram бота
+ * 
+ * Скопируйте этот файл в telegram-config.php и укажите ваш токен
+ * cp telegram-config.php.example telegram-config.php
+ */
+
+return [
+    'BOT_TOKEN' => 'your_bot_token_here',
+];
+

@@ -4,13 +4,24 @@ import { Link } from "react-router-dom";
 
 const METHODS = ["WhatsApp", "Telegram", "Звонок", "SMS", "Email"];
 
-const BOT_TOKEN = "8485434309:AAGnR6UhiacbSD_Q-k0u_viInqNETIX0vOE";
-const CHAT_ID = "773413595";
-const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+// Получаем токен и chat_id из переменных окружения
+const BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN || "";
+const CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID || "";
+
+// Используйте прокси для обхода CORS
+// Вариант 1: PHP прокси (если на сервере есть PHP)
+const USE_PROXY = true; // Включите для использования прокси
+const PROXY_URL = "/telegram-proxy.php"; // Путь к PHP прокси на вашем сервере
+// Вариант 2: Node.js прокси (если запущен отдельный сервер)
+// const PROXY_URL = "http://localhost:3001/api/telegram/send";
+
+// Прямой URL (не работает из-за CORS, но оставлен для справки)
+const DIRECT_API_URL = BOT_TOKEN ? `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage` : "";
 
 const ContactForm = ({ img }) => {
   const [form, setForm] = React.useState({
     name: "",
+    email: "",
     method: METHODS[0],
     agree: false,
   });
@@ -59,45 +70,112 @@ const ContactForm = ({ img }) => {
   // валидно: 11 цифр и начинается с 7 (если надо — разреши и 8)
   const phoneValid = digits.length === 11 && digits.startsWith("7");
 
-  const canSubmit = nameValid && phoneValid && form.agree;
+  // Валидация email: опционально, но если выбран Email как способ связи - обязательно
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailValid = form.method === "Email" 
+    ? form.email?.trim().length > 0 && emailRegex.test(form.email.trim())
+    : form.email?.trim().length === 0 || emailRegex.test(form.email.trim());
+
+  const canSubmit = nameValid && phoneValid && emailValid && form.agree;
+
+  // Функция для экранирования специальных символов Markdown
+  const escapeMarkdown = (text) => {
+    if (!text) return "";
+    return String(text)
+      .replace(/\*/g, "\\*")      // *
+      .replace(/_/g, "\\_")       // _
+      .replace(/\[/g, "\\[")      // [
+      .replace(/\]/g, "\\]")      // ]
+      .replace(/\(/g, "\\(")      // (
+      .replace(/\)/g, "\\)")      // )
+      .replace(/~/g, "\\~")       // ~
+      .replace(/`/g, "\\`")       // `
+      .replace(/>/g, "\\>")       // >
+      .replace(/#/g, "\\#")       // #
+      .replace(/\+/g, "\\+")      // +
+      .replace(/-/g, "\\-")       // -
+      .replace(/=/g, "\\=")       // =
+      .replace(/\|/g, "\\|")      // |
+      .replace(/\{/g, "\\{")      // {
+      .replace(/\}/g, "\\}");     // }
+  };
 
   // ОТПРАВКА
   const submit = async (e) => {
     e.preventDefault();
-    setTouched({ name: true, phone: true, agree: true });
+    setTouched({ name: true, phone: true, email: true, agree: true });
 
     if (!canSubmit) return;
 
+    // Проверяем наличие токена и chat_id
+    if (!BOT_TOKEN || !CHAT_ID) {
+      alert("Ошибка конфигурации: не указан токен бота или chat_id. Проверьте файл .env");
+      console.error("BOT_TOKEN:", BOT_TOKEN ? "установлен" : "не установлен");
+      console.error("CHAT_ID:", CHAT_ID ? "установлен" : "не установлен");
+      return;
+    }
+
+    // Экранируем данные пользователя для безопасной отправки в Markdown
+    // Телефон не экранируем, так как он уже в безопасном формате (только цифры, скобки, дефисы)
+    const escapedName = escapeMarkdown(form.name);
+    const escapedEmail = form.email?.trim() ? escapeMarkdown(form.email.trim()) : "";
+    const escapedMethod = escapeMarkdown(form.method);
+
+    const emailText = escapedEmail ? `📧 Email: ${escapedEmail}` : "";
     const message = `📩 *Новая заявка с сайта WAYCATERING*
-👤 Имя: ${form.name}
+👤 Имя: ${escapedName}
 📞 Телефон: ${phoneRaw}
-💬 Способ связи: ${form.method}
+${emailText ? emailText + "\n" : ""}💬 Способ связи: ${escapedMethod}
 ✅ Согласие: ${form.agree ? "Да" : "Нет"}`;
 
     try {
       setLoading(true);
-      const res = await fetch(API_URL, {
+      
+      const url = USE_PROXY ? PROXY_URL : DIRECT_API_URL;
+      const requestBody = USE_PROXY
+        ? JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message,
+            parse_mode: "Markdown",
+          })
+        : (() => {
+            const params = new URLSearchParams({
+              chat_id: CHAT_ID,
+              text: message,
+              parse_mode: "Markdown",
+            });
+            return params.toString();
+          })();
+
+      const res = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: message,
-          parse_mode: "Markdown",
-        }),
+        headers: USE_PROXY
+          ? { "Content-Type": "application/json" }
+          : { "Content-Type": "application/x-www-form-urlencoded" },
+        body: requestBody,
       });
 
-      if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.ok) {
         alert("Заявка успешно отправлена ✅");
 
-        setForm({ name: "", method: METHODS[0], agree: false });
+        setForm({ name: "", email: "", method: METHODS[0], agree: false });
         if (phoneRef.current) phoneRef.current.value = "";
+        setTouched({});
       } else {
-        const data = await res.json().catch(() => ({}));
-        alert(`Ошибка при отправке в Telegram 😢 ${data?.description || ""}`);
+        console.error("Telegram API Error:", data);
+        const errorMsg = data.description || data.error_code || "Неизвестная ошибка";
+        alert(`Ошибка при отправке в Telegram 😢\n${errorMsg}\n\nПроверьте консоль браузера (F12) для подробностей.`);
       }
     } catch (err) {
-      console.error(err);
-      alert("Не удалось отправить сообщение");
+      console.error("Fetch Error:", err);
+      // Проверяем, это CORS ошибка?
+      if (err.message?.includes("CORS") || err.message?.includes("Failed to fetch")) {
+        alert("Ошибка CORS: Telegram Bot API не разрешает прямые запросы из браузера.\n\nНужно использовать прокси-сервер или backend. Обратитесь к разработчику.");
+      } else {
+        alert(`Не удалось отправить сообщение: ${err.message}\n\nПроверьте консоль браузера (F12) для подробностей.`);
+      }
     } finally {
       setLoading(false);
     }
@@ -150,6 +228,29 @@ const ContactForm = ({ img }) => {
                 {touched.phone && !phoneValid && (
                   <span className={styles.hint}>
                     Формат: +7 (999) 123-45-67
+                  </span>
+                )}
+              </label>
+
+              <label className={styles.label}>
+                Email {form.method === "Email" && <span style={{ color: "#E6007E" }}>*</span>}
+                <input
+                  className={`${styles.input} ${
+                    touched.email && !emailValid ? styles.error : ""
+                  }`}
+                  type="email"
+                  name="email"
+                  placeholder="example@mail.com"
+                  value={form.email}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  autoComplete="email"
+                />
+                {touched.email && !emailValid && (
+                  <span className={styles.hint}>
+                    {form.method === "Email" 
+                      ? "Email обязателен при выборе способа связи Email" 
+                      : "Введите корректный email адрес"}
                   </span>
                 )}
               </label>
