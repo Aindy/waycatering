@@ -17,10 +17,18 @@ const Header = () => {
           <Link
             to="/"
             className={`${styles.link} ${
-              location.pathname === "/" ? styles.active : ""
+              location.pathname === "/" && !location.hash ? styles.active : ""
             }`}
           >
             Главная
+          </Link>
+          <Link
+            to="/#portfolio"
+            className={`${styles.link} ${
+              location.hash === "#portfolio" ? styles.active : ""
+            }`}
+          >
+            Портфолио
           </Link>
           <Link
             to="/catalogFood"

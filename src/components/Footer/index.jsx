@@ -39,7 +39,7 @@ const Footer = () => {
           </div>
 
           <div className={styles.left}>
-            <p>WAYCATERING © 2024</p>
+            <p>WAYCATERING © 2026</p>
             <Link to="/catalogFood">МЕНЮ</Link>
             <Link to="/catalogDevice">АРЕНДА</Link>
             <Link to="/contacts">О НАС</Link>

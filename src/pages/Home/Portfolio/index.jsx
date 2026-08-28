@@ -22,7 +22,7 @@ const Portfolio = () => {
 
   return (
     <div className="wrapper">
-      <div className={styles.portfolio}>
+      <div className={styles.portfolio} id="portfolio">
         <h1>Наше портфолио</h1>
         <p className={styles.lead}>
           Фестивали, форумы, открытия и частные праздники — от кофе-брейка до
