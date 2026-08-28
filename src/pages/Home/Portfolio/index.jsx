@@ -1,48 +1,82 @@
 import React from "react";
-import Button from "../../../components/Button";
-import img1 from "../../../assets/img/home/img4.jpg";
-import img2 from "../../../assets/img/home/img5.jpg";
 import styles from "./index.module.sass";
-import vectorLeft from "../../../assets/svg/VectorLeft.svg";
-import vectorRight from "../../../assets/svg/VectorRight.svg";
+import dataPortfolio, { categories } from "../../../assets/data/dataPortfolio";
+import Lightbox from "../../../components/Lightbox";
+
 const Portfolio = () => {
+  const [filter, setFilter] = React.useState("all");
+  const [opened, setOpened] = React.useState(null);
+
+  const counts = React.useMemo(() => {
+    const acc = { all: dataPortfolio.length };
+    dataPortfolio.forEach((p) => {
+      acc[p.category] = (acc[p.category] ?? 0) + 1;
+    });
+    return acc;
+  }, []);
+
+  const items =
+    filter === "all"
+      ? dataPortfolio
+      : dataPortfolio.filter((p) => p.category === filter);
+
   return (
     <div className="wrapper">
       <div className={styles.portfolio}>
-        <div className={styles.title}>
-          <h1>Наше портфолио</h1>
-          <div className={styles.buts}>
-            <div className={styles.btn}>
-              <Button title={<img src={vectorLeft} alt="" />} />
-            </div>
-            <div className={styles.btn}>
-              <Button title={<img src={vectorRight} alt="" />} />
-            </div>
-          </div>
+        <h1>Наше портфолио</h1>
+        <p className={styles.lead}>
+          Фестивали, форумы, открытия и частные праздники — от кофе-брейка до
+          зоны питания на несколько тысяч гостей.
+        </p>
+
+        <div className={styles.tags}>
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              className={`${styles.tag} ${
+                filter === c.id ? styles.tagActive : ""
+              }`}
+              onClick={() => setFilter(c.id)}
+            >
+              {c.title}
+              <span className={styles.count}>{counts[c.id] ?? 0}</span>
+            </button>
+          ))}
         </div>
 
         <div className={styles.cards}>
-          <div className={styles.card}>
-            <img className={styles.img} src={img1} alt="" />
-            <div className={styles.card_info}>
-              <h3>Музыкальный фестиваль «Песня года»</h3>
+          {items.map((p) => {
+            const hasPhotos = p.photos.length > 0;
+            return (
+              <article
+                key={p.id}
+                className={`${styles.card} ${hasPhotos ? styles.clickable : ""}`}
+                onClick={hasPhotos ? () => setOpened(p) : undefined}
+              >
+                <div className={styles.thumb}>
+                  <img className={styles.img} src={p.cover} alt={p.title} loading="lazy" />
+                  <span className={styles.badge}>
+                    {hasPhotos ? `${p.photos.length} фото` : "Видео"}
+                  </span>
+                  {p.stat && <span className={styles.stat}>{p.stat}</span>}
+                </div>
 
-              <div className={styles.button}>
-                <Button title="Посмотреть" />
-              </div>
-            </div>
-          </div>
-          <div className={styles.card}>
-            <img className={styles.img} src={img2} alt="" />
-            <div className={styles.card_info}>
-              <h3>Открытие автосалона китайских производителей</h3>
-              <div className={styles.button}>
-                <Button title="Посмотреть" />
-              </div>
-            </div>
-          </div>
+                <div className={styles.card_info}>
+                  <h3>{p.title}</h3>
+                  {p.place && <p className={styles.place}>{p.place}</p>}
+                  <p className={styles.desc}>{p.desc}</p>
+                  {hasPhotos && (
+                    <span className={styles.more}>Смотреть фото →</span>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
+
+      {opened && <Lightbox project={opened} onClose={() => setOpened(null)} />}
     </div>
   );
 };

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WayCatering — портфолио</title>
+<style>
+@font-face { font-family: "Golos Text"; src: url("assets/GolosText-Regular.woff2") format("woff2"); font-weight: 400; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Golos Text", system-ui, sans-serif; font-size: 18px; background: #fff; color: #000; }
+h1,h3,p { margin: 0; font-family: inherit; }
+img { max-width: 100%; height: auto; }
+.wrapper { padding: 0 16px; margin: 0 auto; }
+@media (min-width: 1100px) { .wrapper { padding: 0 44px; width: 990px; } }
+@media (min-width: 1440px) { .wrapper { width: 1300px; } }
+
+.portfolio { margin-top: 40px; max-width: 100%; }
+.portfolio h1 { font-size: 36px; margin-bottom: 16px; font-weight: 500; text-align: center; }
+@media (min-width: 1100px) { .portfolio h1 { font-size: 56px; } }
+.lead { max-width: 620px; margin: 0 auto; text-align: center; font-size: 16px; color: #6B6B72; }
+@media (min-width: 1100px) { .lead { font-size: 18px; } }
+.tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 24px 0 28px; }
+@media (min-width: 1100px) { .tags { gap: 12px; margin: 40px 0 44px; } }
+.tag { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #E9E9EB; border-radius: 50px; background: #fff; color: #000; font-family: inherit; font-size: 14px; cursor: pointer; transition: border-color .2s, color .2s, background .2s; }
+.tag:hover { border-color: #E6007E; color: #E6007E; }
+@media (min-width: 1100px) { .tag { font-size: 16px; } }
+.tagActive, .tagActive:hover { background: #E6007E; border-color: #E6007E; color: #fff; }
+.count { font-size: 12px; opacity: .6; }
+.cards { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 750px) { .cards { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+.card { display: flex; flex-direction: column; }
+@media (min-width: 750px) { .card:first-child { grid-column: span 2; } }
+.clickable { cursor: pointer; }
+.clickable:hover .img { transform: scale(1.04); }
+.clickable:hover .more { color: #E6007E; }
+.thumb { position: relative; overflow: hidden; border-radius: 24px; }
+.img { display: block; width: 100%; height: 260px; object-fit: cover; object-position: center; transition: transform .4s ease; }
+@media (min-width: 750px) { .img { height: 300px; } }
+@media (min-width: 1100px) { .img { height: 340px; } }
+@media (min-width: 750px) { .card:first-child .img { height: 420px; } }
+@media (min-width: 1100px) { .card:first-child .img { height: 520px; } }
+.badge { position: absolute; top: 16px; left: 16px; padding: 6px 12px; border-radius: 50px; background: rgba(0,0,0,.55); color: #fff; font-size: 13px; backdrop-filter: blur(4px); }
+.stat { position: absolute; bottom: 16px; left: 16px; padding: 6px 12px; border-radius: 50px; background: #E6007E; color: #fff; font-size: 13px; }
+.card_info { margin-top: 16px; }
+@media (min-width: 750px) { .card_info { margin-top: 20px; } }
+.card_info h3 { font-size: 20px; font-weight: 500; line-height: 1.3; }
+@media (min-width: 1100px) { .card_info h3 { font-size: 26px; } }
+.place { margin-top: 6px; font-size: 14px; color: #E6007E; }
+.desc { margin-top: 10px; font-size: 15px; line-height: 1.5; color: #6B6B72; }
+@media (min-width: 1100px) { .desc { font-size: 16px; } }
+.more { display: inline-block; margin-top: 12px; font-size: 15px; color: #000; transition: color .2s; }
+
+.overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.82); display: flex; align-items: center; justify-content: center; padding: 16px; }
+@media (min-width: 750px) { .overlay { padding: 32px; } }
+.inner { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 12px; }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; color: #fff; }
+.ltitle { font-size: 18px; font-weight: 500; }
+@media (min-width: 750px) { .ltitle { font-size: 24px; } }
+.lplace { margin-top: 4px; font-size: 14px; color: #C9C9CE; }
+.close { flex: 0 0 auto; width: 40px; height: 40px; border: none; border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font-size: 18px; cursor: pointer; }
+.close:hover { background: #E6007E; }
+.stage { position: relative; display: flex; align-items: center; justify-content: center; }
+.photo { width: 100%; max-height: 68vh; object-fit: contain; border-radius: 16px; background: #111; }
+.nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: none; border-radius: 50%; background: rgba(255,255,255,.9); color: #000; font-size: 26px; line-height: 1; cursor: pointer; }
+.nav:hover { background: #E6007E; color: #fff; }
+@media (min-width: 750px) { .nav { width: 56px; height: 56px; } }
+.left { left: 8px; } .right { right: 8px; }
+@media (min-width: 750px) { .left { left: -28px; } .right { right: -28px; } }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #fff; }
+.counter { font-size: 14px; color: #C9C9CE; }
+.dots { display: flex; gap: 8px; flex-wrap: wrap; }
+.dot { width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%; background: rgba(255,255,255,.35); cursor: pointer; }
+.dotActive { background: #E6007E; transform: scale(1.3); }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="portfolio">
+    <h1>Наше портфолио</h1>
+    <p class="lead">Фестивали, форумы, открытия и частные праздники — от кофе-брейка до зоны питания на несколько тысяч гостей.</p>
+    <div class="tags" id="tags"></div>
+    <div class="cards" id="cards"></div>
+  </div>
+</div>
+<div class="overlay hidden" id="overlay">
+  <div class="inner">
+    <div class="head">
+      <div><h3 class="ltitle" id="ltitle"></h3><p class="lplace" id="lplace"></p></div>
+      <button class="close" id="close">&#10005;</button>
+    </div>
+    <div class="stage">
+      <img class="photo" id="photo" alt="">
+      <button class="nav left" id="prev">&#8249;</button>
+      <button class="nav right" id="next">&#8250;</button>
+    </div>
+    <div class="foot"><span class="counter" id="counter"></span><div class="dots" id="dots"></div></div>
+  </div>
+</div>
+<script>
+var A = 'assets/';
+function ph(name, n) { var r = []; for (var i = 1; i <= n; i++) r.push(A + name + '-' + i + '.jpg'); return r; }
+var DATA = [
+  { title: 'Кавказский инвестиционный форум', place: 'г. Грозный', category: 'forum', desc: 'Организация питания гостей и участников форума. За три дня обслужено порядка 9 000 гостей.', stat: '9 000 гостей', cover: A + 'kif-cover.jpg', photos: [] },
+  { title: 'Музыкальный фестиваль «Песня года»', place: 'Дворец торжеств им. Дагуна Омаева', category: 'party', desc: 'Фуршет на финале ежегодной XIII музыкальной премии.', stat: 'XIII премия', cover: A + 'pesnya-cover.jpg', photos: ph('pesnya', 8) },
+  { title: 'Спортивный фестиваль «Техноспорт Первых»', place: '', category: 'sport', desc: 'Организация обеда для гостей и участников фестиваля.', stat: '1 300 гостей', cover: A + 'teh-cover.jpg', photos: ph('teh', 8) },
+  { title: 'Туристический B2B форум «Открытый Кавказ»', place: '', category: 'forum', desc: 'Организация фуршета для участников форума.', stat: 'Фуршет', cover: A + 'kavkaz-cover.jpg', photos: ph('kavkaz', 8) },
+  { title: 'Открытие автосалона китайских производителей', place: 'г. Грозный', category: 'opening', desc: 'Кейтеринг на открытии дилерского центра.', stat: 'Открытие', cover: A + 'auto-cover.jpg', photos: ph('auto', 8) },
+  { title: 'Спортивный фестиваль Wild Trail', place: 'ГК «Ведучи»', category: 'sport', desc: 'Организация питания для участников и гостей фестиваля. Была организована зона питания на 1 200 человек.', stat: '1 200 человек', cover: A + 'veduchi-cover.jpg', photos: [] },
+  { title: 'Финал кольцевых гонок SMP Racing', place: 'Автодром «Крепость Грозная»', category: 'sport', desc: 'Организация обеда и кофе-брейка для гостей финала.', stat: 'Обед и кофе-брейк', cover: A + 'krepost-cover.jpg', photos: [] },
+  { title: 'Открытие кулинарной академии имени Хадижат Мовлатовой', place: '', category: 'opening', desc: 'Кейтеринговое обслуживание церемонии открытия.', stat: 'Открытие', cover: A + 'akademiya-cover.jpg', photos: [] },
+  { title: 'Презентация МФК «ДЖИГИТ»', place: '', category: 'opening', desc: 'Организация кейтеринга на презентации клуба.', stat: 'Презентация', cover: A + 'jigit-cover.jpg', photos: [] },
+  { title: 'Частные и корпоративные мероприятия', place: '', category: 'party', desc: 'Организация питания на закрытых мероприятиях под запрос заказчика.', stat: 'Под запрос', cover: A + 'korporativ-cover.jpg', photos: [] }
+];
+var CATS = [['all','Все проекты'],['forum','Форумы и конференции'],['sport','Фестивали и спорт'],['opening','Открытия и презентации'],['party','Праздники и корпоративы']];
+var filter = 'all', cur = null, idx = 0;
+var counts = { all: DATA.length };
+DATA.forEach(function (p) { counts[p.category] = (counts[p.category] || 0) + 1; });
+function renderTags() {
+  document.getElementById('tags').innerHTML = CATS.map(function (c) {
+    return '<button class="tag ' + (filter === c[0] ? 'tagActive' : '') + '" data-f="' + c[0] + '">' + c[1] + '<span class="count">' + (counts[c[0]] || 0) + '</span></button>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-f]'), function (b) {
+    b.onclick = function () { filter = b.getAttribute('data-f'); renderTags(); renderCards(); };
+  });
+}
+function renderCards() {
+  var items = filter === 'all' ? DATA : DATA.filter(function (p) { return p.category === filter; });
+  document.getElementById('cards').innerHTML = items.map(function (p, i) {
+    var has = p.photos.length > 0;
+    return '<article class="card ' + (has ? 'clickable' : '') + '" data-i="' + i + '">' +
+      '<div class="thumb"><img class="img" src="' + p.cover + '" alt="">' +
+      '<span class="badge">' + (has ? p.photos.length + ' фото' : 'Видео') + '</span>' +
+      (p.stat ? '<span class="stat">' + p.stat + '</span>' : '') + '</div>' +
+      '<div class="card_info"><h3>' + p.title + '</h3>' +
+      (p.place ? '<p class="place">' + p.place + '</p>' : '') +
+      '<p class="desc">' + p.desc + '</p>' +
+      (has ? '<span class="more">Смотреть фото &rarr;</span>' : '') + '</div></article>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('.card.clickable'), function (c) {
+    c.onclick = function () { openBox(items[+c.getAttribute('data-i')]); };
+  });
+}
+function openBox(p) { cur = p; idx = 0; document.getElementById('overlay').classList.remove('hidden'); paint(); }
+function closeBox() { document.getElementById('overlay').classList.add('hidden'); }
+function paint() {
+  document.getElementById('ltitle').textContent = cur.title;
+  document.getElementById('lplace').textContent = cur.place || '';
+  document.getElementById('photo').src = cur.photos[idx];
+  document.getElementById('counter').textContent = (idx + 1) + ' / ' + cur.photos.length;
+  document.getElementById('dots').innerHTML = cur.photos.map(function (_, i) {
+    return '<button class="dot ' + (i === idx ? 'dotActive' : '') + '" data-d="' + i + '"></button>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-d]'), function (b) {
+    b.onclick = function (e) { e.stopPropagation(); idx = +b.getAttribute('data-d'); paint(); };
+  });
+}
+document.getElementById('close').onclick = closeBox;
+document.getElementById('overlay').onclick = function (e) { if (e.target.id === 'overlay') closeBox(); };
+document.getElementById('prev').onclick = function (e) { e.stopPropagation(); idx = (idx - 1 + cur.photos.length) % cur.photos.length; paint(); };
+document.getElementById('next').onclick = function (e) { e.stopPropagation(); idx = (idx + 1) % cur.photos.length; paint(); };
+document.addEventListener('keydown', function (e) {
+  if (document.getElementById('overlay').classList.contains('hidden')) return;
+  if (e.key === 'Escape') closeBox();
+  if (e.key === 'ArrowLeft') { idx = (idx - 1 + cur.photos.length) % cur.photos.length; paint(); }
+  if (e.key === 'ArrowRight') { idx = (idx + 1) % cur.photos.length; paint(); }
+});
+renderTags(); renderCards();
+</script>
+</body>
+</html>
