@@ -62,6 +62,7 @@ const dataPortfolio = [
     desc: "Организация питания гостей и участников форума. За три дня обслужено порядка 9 000 гостей.",
     stat: "9 000 гостей",
     cover: kifCover,
+    video: "/video/kif.mp4",
     photos: [],
   },
   {
@@ -112,6 +113,7 @@ const dataPortfolio = [
     desc: "Организация питания для участников и гостей фестиваля. Была организована зона питания на 1 200 человек.",
     stat: "1 200 человек",
     cover: veduchiCover,
+    video: "/video/veduchi.mp4",
     photos: [],
   },
   {
@@ -122,6 +124,7 @@ const dataPortfolio = [
     desc: "Организация обеда и кофе-брейка для гостей финала.",
     stat: "Обед и кофе-брейк",
     cover: krepostCover,
+    video: "/video/krepost.mp4",
     photos: [],
   },
   {
@@ -132,6 +135,7 @@ const dataPortfolio = [
     desc: "Кейтеринговое обслуживание церемонии открытия.",
     stat: "Открытие",
     cover: akademiyaCover,
+    video: "/video/akademiya.mp4",
     photos: [],
   },
   {
@@ -142,6 +146,7 @@ const dataPortfolio = [
     desc: "Организация кейтеринга на презентации клуба.",
     stat: "Презентация",
     cover: jigitCover,
+    video: "/video/jigit.mp4",
     photos: [],
   },
   {
@@ -152,6 +157,7 @@ const dataPortfolio = [
     desc: "Организация питания на закрытых мероприятиях под запрос заказчика.",
     stat: "Под запрос",
     cover: korporativCover,
+    video: "/video/korporativ.mp4",
     photos: [],
   },
 ];

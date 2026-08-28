@@ -48,11 +48,13 @@ const Portfolio = () => {
         <div className={styles.cards}>
           {items.map((p) => {
             const hasPhotos = p.photos.length > 0;
+            const hasVideo = Boolean(p.video);
+            const openable = hasPhotos || hasVideo;
             return (
               <article
                 key={p.id}
-                className={`${styles.card} ${hasPhotos ? styles.clickable : ""}`}
-                onClick={hasPhotos ? () => setOpened(p) : undefined}
+                className={`${styles.card} ${openable ? styles.clickable : ""}`}
+                onClick={openable ? () => setOpened(p) : undefined}
               >
                 <div className={styles.thumb}>
                   <img className={styles.img} src={p.cover} alt={p.title} loading="lazy" />
@@ -60,14 +62,21 @@ const Portfolio = () => {
                     {hasPhotos ? `${p.photos.length} фото` : "Видео"}
                   </span>
                   {p.stat && <span className={styles.stat}>{p.stat}</span>}
+                  {hasVideo && !hasPhotos && (
+                    <span className={styles.play} aria-hidden>
+                      ▶
+                    </span>
+                  )}
                 </div>
 
                 <div className={styles.card_info}>
                   <h3>{p.title}</h3>
                   {p.place && <p className={styles.place}>{p.place}</p>}
                   <p className={styles.desc}>{p.desc}</p>
-                  {hasPhotos && (
-                    <span className={styles.more}>Смотреть фото →</span>
+                  {openable && (
+                    <span className={styles.more}>
+                      {hasPhotos ? "Смотреть фото →" : "Смотреть видео →"}
+                    </span>
                   )}
                 </div>
               </article>

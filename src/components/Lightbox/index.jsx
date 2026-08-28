@@ -4,6 +4,8 @@ import styles from "./index.module.sass";
 const Lightbox = ({ project, onClose }) => {
   const [index, setIndex] = React.useState(0);
   const photos = project?.photos ?? [];
+  const video = project?.video;
+  const isVideo = Boolean(video) && photos.length === 0;
 
   const prev = React.useCallback(
     () => setIndex((i) => (i - 1 + photos.length) % photos.length),
@@ -17,6 +19,7 @@ const Lightbox = ({ project, onClose }) => {
   React.useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
+      if (isVideo) return;
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
@@ -27,9 +30,9 @@ const Lightbox = ({ project, onClose }) => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [onClose, prev, next]);
+  }, [onClose, prev, next, isVideo]);
 
-  if (!project || photos.length === 0) return null;
+  if (!project || (photos.length === 0 && !video)) return null;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -50,9 +53,25 @@ const Lightbox = ({ project, onClose }) => {
         </div>
 
         <div className={styles.stage}>
-          <img className={styles.photo} src={photos[index]} alt={project.title} />
+          {isVideo ? (
+            <video
+              className={styles.video}
+              src={video}
+              poster={project.cover}
+              controls
+              autoPlay
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            <img
+              className={styles.photo}
+              src={photos[index]}
+              alt={project.title}
+            />
+          )}
 
-          {photos.length > 1 && (
+          {!isVideo && photos.length > 1 && (
             <>
               <button
                 className={`${styles.nav} ${styles.left}`}
@@ -75,20 +94,28 @@ const Lightbox = ({ project, onClose }) => {
         </div>
 
         <div className={styles.foot}>
-          <span className={styles.counter}>
-            {index + 1} / {photos.length}
-          </span>
-          <div className={styles.dots}>
-            {photos.map((p, i) => (
-              <button
-                key={p}
-                type="button"
-                aria-label={`Фото ${i + 1}`}
-                className={`${styles.dot} ${i === index ? styles.dotActive : ""}`}
-                onClick={() => setIndex(i)}
-              />
-            ))}
-          </div>
+          {isVideo ? (
+            <span className={styles.counter}>{project.desc}</span>
+          ) : (
+            <>
+              <span className={styles.counter}>
+                {index + 1} / {photos.length}
+              </span>
+              <div className={styles.dots}>
+                {photos.map((p, i) => (
+                  <button
+                    key={p}
+                    type="button"
+                    aria-label={`Фото ${i + 1}`}
+                    className={`${styles.dot} ${
+                      i === index ? styles.dotActive : ""
+                    }`}
+                    onClick={() => setIndex(i)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

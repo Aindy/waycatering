@@ -26,3 +26,7 @@ build/telegram-config.php
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Исходники видео (340 МБ, отдельные файлы больше лимита GitHub в 100 МБ)
+# Лежат локально в проекте; в сборку идут сжатые копии из public/video
+/media/portfolio/video
