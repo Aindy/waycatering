@@ -44,12 +44,6 @@ if (!$BOT_TOKEN) {
     }
 }
 
-// Если все еще нет токена, используем значение по умолчанию (для обратной совместимости)
-// ВАЖНО: В production удалите эту строку и используйте только переменные окружения или конфиг!
-if (!$BOT_TOKEN) {
-    $BOT_TOKEN = "8266578116:AAFDsNxPRhNO3A6bJh9MLoOaJ34L_Xm37c0";
-}
-
 if (!$BOT_TOKEN) {
     http_response_code(500);
     echo json_encode(['ok' => false, 'error' => 'Bot token not configured']);
