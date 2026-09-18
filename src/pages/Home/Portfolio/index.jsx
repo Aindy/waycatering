@@ -61,7 +61,6 @@ const Portfolio = () => {
                   <span className={styles.badge}>
                     {hasPhotos ? `${p.photos.length} фото` : "Видео"}
                   </span>
-                  {p.stat && <span className={styles.stat}>{p.stat}</span>}
                   {hasVideo && !hasPhotos && (
                     <span className={styles.play} aria-hidden>
                       ▶
